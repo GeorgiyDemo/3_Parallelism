@@ -1,3 +1,4 @@
+from multiprocessing import Process, Pool
 
 
 def element(index, A, B):
@@ -10,7 +11,17 @@ def element(index, A, B):
     return res
 
 
-matrix1 = [[1, 2], [3, 4]]
-matrix2 = [[2, 0], [1, 2]]
+def main():
+    matrix1 = [[1, 2], [3, 4]]
+    matrix2 = [[2, 0], [1, 2]]
 
-print(element((1, 0), matrix1, matrix2))
+    res = 0
+
+    p1 = Process(target=element, args=[(0, 0), matrix1, matrix2, res])
+    p1.start()
+    p1.join()
+
+    print(res)
+
+if __name__ == '__main__':
+    main()
