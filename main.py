@@ -1,27 +1,34 @@
-from multiprocessing import Process, Pool
+import multiprocessing as mp
+import yaml
+import random
+from typing import List
 
+def element(i: int, j: int, A: list, B: list, answer: mp.Queue):
+    answer.put((sum(A[i][k] * B[k][j] for k in range(len(A[0]) or len(B))), [i, j]))
 
-def element(index, A, B):
-    i, j = index
-    res = 0
-    # get a middle dimension
-    N = len(A[0]) or len(B)
-    for k in range(N):
-        res += A[i][k] * B[k][j]
-    return res
+def matrix_reader(file_name : str):
+    """Читает матрицу из уазанного файла"""
+    with open (file_name, "r") as file:
+        return yaml.load(file)
 
+def matrix_gen(n : int, m : int) -> List[List[int]]:
+    """генерация матрицы"""
+    matrix = []
+    for i in range(n):
+        matrix.append([])
+        for j in range(m):
+            matrix[i].append(random.randint(1,100))
+    return matrix
 
 def main():
-    matrix1 = [[1, 2], [3, 4]]
-    matrix2 = [[2, 0], [1, 2]]
+    manager = mp.Manager()
 
-    res = 0
+    n = int(input('Введите кол-во строк в матрице -> '))
+    m = int(input('Введите кол-во столбцов в матрице -> '))
+    matrix1 = matrix_gen(n,m)
+    matrix2 = matrix_gen(m,n)
 
-    p1 = Process(target=element, args=[(0, 0), matrix1, matrix2, res])
-    p1.start()
-    p1.join()
 
-    print(res)
 
 if __name__ == '__main__':
     main()
